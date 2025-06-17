@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nutrição Saudável</title>
+  <style>
+    /* Reset básico */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body, h1, h2, h3, h4, p, ul, li, button {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    ul {
+      list-style: none;
+    }
+    button {
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    body {
+      background: #f9fafa;
+      color: #333;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* HEADER */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      background: #2f5230;
+      display: flex;
+      align-items: center;
+      padding: 0 1.5rem;
+      color: #e6f1d3;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.15);
+      z-index: 1300;
+      justify-content: space-between;
+    }
+    header .logo {
+      font-weight: 700;
+      font-size: 1.3rem;
+      user-select: none;
+    }
+    #toggle-sidebar {
+      font-size: 1.6rem;
+      color: #e6f1d3;
+      display: none;
+      background: transparent;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+      padding: 0.25rem 0.5rem;
+    }
+    #toggle-sidebar:hover, #toggle-sidebar:focus {
+      background-color: rgba(230, 241, 211, 0.3);
+      outline: none;
+    }
+
+    /* SIDEBAR */
+    #sidebar {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      bottom: 0;
+      width: 280px;
+      background: #406634;
+      padding: 1.5rem 1.8rem;
+      color: #d7e7c2;
+      overflow-y: auto;
+      box-shadow: 2px 0 8px rgb(0 0 0 / 0.1);
+      transition: transform 0.3s ease;
+      z-index: 1200;
+      user-select: none;
+    }
+    #sidebar h1 {
+      font-size: 1.4rem;
+      margin-bottom: 0.3rem;
+      font-weight: 700;
+    }
+    #sidebar p {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      color: #b0c48d;
+    }
+    #sidebar ul li + li {
+      margin-top: 0.6rem;
+    }
+    #sidebar button {
+      width: 100%;
+      padding: 0.5rem 0.8rem;
+      text-align: left;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #e6f1d3;
+      background: transparent;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
+    }
+    #sidebar button:hover,
+    #sidebar button:focus {
+      background-color: #8db87e;
+      color: #1f2e15;
+      outline: none;
+    }
+    #sidebar button.active {
+      background-color: #bedf9c;
+      color: #254d11;
+      box-shadow: inset 3px 0 0 0 #1f2e15;
+    }
+
+    /* MAIN */
+    main {
+      margin-left: 280px;
+      margin-top: 60px;
+      padding: 2rem 2.5rem 3rem;
+      flex-grow: 1;
+      background: #f9fafa;
+      min-height: calc(100vh - 60px);
+    }
+
+    /* HERO */
+    #hero {
+      background: linear-gradient(135deg, #9dcc7b 0%, #5a7a33 100%);
+      color: #f0f9f0;
+      border-radius: 14px;
+      padding: 3rem 3.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 18px rgb(0 0 0 / 0.12);
+      margin-bottom: 3rem;
+      user-select: none;
+      text-align: center;
+      flex-direction: column;
+    }
+    #hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.25);
+      max-width: 720px;
+    }
+    #hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      font-weight: 500;
+      line-height: 1.4;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      max-width: 480px;
+    }
+    #btn-explore {
+      background-color: #e5f3d5;
+      color: #4a6932;
+      padding: 0.85rem 2.5rem;
+      font-weight: 700;
+      border-radius: 40px;
+      box-shadow: 0 6px 8px rgb(230 243 213 / 0.7);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      font-size: 1.1rem;
+      user-select: none;
+      border: 2px solid transparent;
+      align-self: center;
+    }
+    #btn-explore:hover,
+    #btn-explore:focus {
+      background-color: #bedf9c;
+      box-shadow: 0 10px 14px rgb(189 223 156 / 0.8);
+      outline: none;
+    }
+
+    /* HIGHLIGHTS */
+    #highlights h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1.3rem;
+      color: #3f5721;
+      font-weight: 700;
+      user-select: none;
+      letter-spacing: 0.03em;
+      text-align: center;
+    }
+    #highlight-products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.8rem;
+    }
+    .highlight-product {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.07);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.3s ease;
+      user-select: none;
+      min-height: 380px;
+    }
+    .highlight-product:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgb(0 0 0 / 0.12);
+    }
+    .highlight-product img {
+      width: 100%;
+      border-radius: 12px;
+      object-fit: cover;
+      aspect-ratio: 4 / 3;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.12);
+    }
+    .highlight-product h4 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #406634;
+      font-weight: 700;
+      text-align: center;
+      min-height: 44px;
+      line-height: 1.1;
+    }
+    .highlight-product p {
+      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+      color: #647850;
+      text-align: center;
+      font-weight: 500;
+      flex-grow: 1;
+    }
+    .highlight-product strong {
+      color: #3a6b35;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      display: block;
+      text-align: center;
+    }
+    .highlight-product button {
+      background-color: #5a7a33;
+      color: #f0f9f0;
+      font-weight: 600;
+      padding: 0.6rem 1.4rem;
+      border-radius: 30px;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      border: 2px solid transparent;
+      align-self: center;
+    }
+    .highlight-product button:hover,
+    .highlight-product button:focus {
+      background-color: #3a6b35;
+      border-color: #bedf9c;
+      outline: none;
+    }
+
+    /* CARRINHO */
+    #cart {
+      margin-top: 3.5rem;
+      background: #e8f0d8;
+      padding: 1.7rem 2rem;
+      border-radius: 14px;
+      box-shadow: 0 6px 12px rgb(0 0 0 / 0.05);
+      user-select: none;
+    }
+    #cart h2 {
+      color: #406634;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      font-size: 1.6rem;
+      letter-spacing: 0.03em;
+    }
+    #cart-items {
+      max-height: 240px;
+      overflow-y: auto;
+      margin-bottom: 1.5rem;
+    }
+    #cart-items li {
+      background: white;
+      border-radius: 10px;
+      padding: 0.7rem 1rem;
+      margin-bottom: 0.8rem;
+      font-weight: 600;
+      color: #4a6331;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.08);
+    }
+    #cart-items button {
+      background-color: transparent;
+      color: #6c794c;
+      font-size: 1.3rem;
+      font-weight: 700;
+      line-height: 1;
+      padding: 0 0.2rem;
+      transition: color 0.3s ease;
+    }
+    #cart-items button:hover,
+    #cart-items button:focus {
+      color: #3a6b35;
+      outline: none;
+    }
+    #cart-total {
+      font-weight: 700;
+      color: #406634;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      user-select: text;
+    }
+    #empty-cart {
+      background-color: #9cc66d;
+      color: #fff;
+      padding: 0.7rem 1.6rem;
+      border-radius: 40px;
+      font-weight: 700;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      border: 2px solid transparent;
+      display: block;
+      margin-left: auto;
+    }
+    #empty-cart:hover,
+    #empty-cart:focus {
+      background-color: #7ea44a;
+      outline: none;
+    }
+
+    /* FOOTER */
+    footer {
+      background-color: #406634;
+      color: #d7e7c2;
+      text-align: center;
+      padding: 1.2rem 1.5rem;
+      font-size: 0.9rem;
+      user-select: none;
+      margin-top: auto;
+      box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.1);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    footer a {
+      color: #cbe2a1;
+      text-decoration: none;
+      margin: 0 0.5rem;
+      transition: color 0.3s ease;
+    }
+    footer a:hover,
+    footer a:focus {
+      color: #f0f9f0;
+      text-decoration: underline;
+      outline: none;
+    }
+
+    /* RESPONSIVO */
+    @media (max-width: 900px) {
+      #sidebar {
+        transform: translateX(-100%);
+        box-shadow: 3px 0 10px rgb(0 0 0 / 0.12);
+      }
+      #sidebar.visible {
+        transform: translateX(0);
+      }
+      main {
+        margin-left: 0;
+        padding: 1.5rem 1.5rem 3rem;
+      }
+      #toggle-sidebar {
+        display: inline-block;
+      }
+      #hero {
+        padding: 2rem 1.8rem;
+        border-radius: 12px;
+      }
+      #hero h2 {
+        font-size: 2rem;
+      }
+      #highlight-products {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.3rem;
+      }
+    }
+
+    @media (max-width: 500px) {
+      #highlight-products {
+        grid-template-columns: 1fr;
+      }
+      #cart {
+        margin-top: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <button id="toggle-sidebar" aria-label="Abrir menu de categorias">☰</button>
+    <div class="logo" tabindex="0">Nutrição Saudável</div>
+  </header>
+
+  <aside id="sidebar" aria-label="Menu lateral de categorias">
+    <h1>Categorias</h1>
+    <p>Escolha um tipo de alimento</p>
+    <ul id="categories" role="list"></ul>
+    <ul id="subcategories" role="list" style="margin-top:1.5rem;"></ul>
+  </aside>
+
+  <main>
+    <!-- Banner hero -->
+    <section id="hero" aria-label="Apresentação da loja">
+      <h2>Alimente seu corpo com saúde e sabor</h2>
+      <p>Explore nossas opções naturais, frescas e nutritivas para o seu dia a dia.</p>
+      <button id="btn-explore">Explore os produtos</button>
+    </section>
+
+    <!-- Destaques -->
+    <section id="highlights" aria-label="Produtos em destaque">
+      <h3>Destaques da Semana</h3>
+      <div id="highlight-products" role="list"></div>
+    </section>
+
+    <!-- Carrinho -->
+    <section id="cart" aria-label="Carrinho de compras">
+      <h2>Carrinho</h2>
+      <ul id="cart-items" role="list"></ul>
+      <div id="cart-total">Total: R$ 0,00</div>
+      <button id="empty-cart">Esvaziar Carrinho</button>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Nutrição Saudável |
+    <a href="#" aria-label="Facebook">Facebook</a> |
+    <a href="#" aria-label="Instagram">Instagram</a> |
+    <a href="#" aria-label="Contato">Contato</a>
+  </footer>
+
+  <script>
+    // Dados simulados para categorias e produtos
+    const data = {
+      categorias: [
+        { id: 1, nome: 'Frutas', subcategorias: ['Cítricas', 'Tropicais', 'Frutas Vermelhas'] },
+        { id: 2, nome: 'Verduras', subcategorias: ['Folhas', 'Raízes'] },
+        { id: 3, nome: 'Grãos', subcategorias: ['Cereais', 'Leguminosas'] },
+        { id: 4, nome: 'Laticínios', subcategorias: ['Queijos', 'Iogurtes', 'Leites'] }
+      ],
+      destaques: [
+        { id: 101, nome: 'Maçã Fuji', descricao: 'Sabor doce e crocante, direto do pomar.', preco: 5.9, imagem: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&w=400&q=80' },
+        { id: 102, nome: 'Alface Crespa', descricao: 'Folhas frescas e crocantes para sua salada.', preco: 3.2, imagem: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=400&q=80' },
+        { id: 103, nome: 'Arroz Integral', descricao: 'Grão integral, rico em fibras e nutrientes.', preco: 7.5, imagem: 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=400&q=80' },
+        { id: 104, nome: 'Queijo Minas', descricao: 'Queijo fresco com sabor suave e textura macia.', preco: 12.9, imagem: 'https://images.unsplash.com/photo-1613145999676-253b92a73145?auto=format&fit=crop&w=400&q=80' }
+      ]
+    };
+
+    // Elementos
+    const categoriesList = document.getElementById('categories');
+    const subcategoriesList = document.getElementById('subcategories');
+    const highlightsContainer = document.getElementById('highlight-products');
+    const cartItemsList = document.getElementById('cart-items');
+    const cartTotalEl = document.getElementById('cart-total');
+    const emptyCartBtn = document.getElementById('empty-cart');
+    const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+    const sidebar = document.getElementById('sidebar');
+    const btnExplore = document.getElementById('btn-explore');
+
+    // Estado do carrinho
+    let cart = [];
+
+    // Função para formatar preço
+    function formatPrice(price) {
+      return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    // Carregar categorias
+    function loadCategories() {
+      categoriesList.innerHTML = '';
+      data.categorias.forEach(cat => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = cat.nome;
+        btn.dataset.id = cat.id;
+        btn.addEventListener('click', () => {
+          // Ativa botão selecionado
+          Array.from(categoriesList.querySelectorAll('button')).forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          loadSubcategories(cat.subcategorias);
+          filterHighlightsByCategory(cat.id);
+        });
+        li.appendChild(btn);
+        categoriesList.appendChild(li);
+      });
+    }
+
+    // Carregar subcategorias
+    function loadSubcategories(subcats) {
+      subcategoriesList.innerHTML = '';
+      if (!subcats || subcats.length === 0) {
+        subcategoriesList.style.display = 'none';
+        return;
+      }
+      subcategoriesList.style.display = 'block';
+      subcats.forEach(sub => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = sub;
+        btn.addEventListener('click', () => {
+          alert(`Você selecionou a subcategoria: ${sub}`);
+          // Aqui você pode filtrar os produtos por subcategoria, se quiser
+        });
+        li.appendChild(btn);
+        subcategoriesList.appendChild(li);
+      });
+    }
+
+    // Carregar produtos em destaque
+    function loadHighlights(products) {
+      highlightsContainer.innerHTML = '';
+      products.forEach(prod => {
+        const div = document.createElement('div');
+        div.className = 'highlight-product';
+
+        div.innerHTML = `
+          <img src="${prod.imagem}" alt="${prod.nome}" loading="lazy" />
+          <h4>${prod.nome}</h4>
+          <p>${prod.descricao}</p>
+          <strong>${formatPrice(prod.preco)}</strong>
+          <button aria-label="Adicionar ${prod.nome} ao carrinho">Comprar</button>
+        `;
+
+        const btnComprar = div.querySelector('button');
+        btnComprar.addEventListener('click', () => addToCart(prod));
+
+        highlightsContainer.appendChild(div);
+      });
+    }
+
+    // Filtrar destaques por categoria — aqui é só um filtro mock, pois não temos categoria no produto
+    function filterHighlightsByCategory(catId) {
+      // Exemplo: filtra só 2 primeiros para cada categoria
+      // Na prática, você deve relacionar produtos e categorias
+      const filtered = data.destaques.filter((_, i) => i < 4);
+      loadHighlights(filtered);
+    }
+
+    // Adicionar item no carrinho
+    function addToCart(product) {
+      const found = cart.find(item => item.id === product.id);
+      if (found) {
+        found.quantidade++;
+      } else {
+        cart.push({...product, quantidade: 1});
+      }
+      updateCartUI();
+    }
+
+    // Remover item do carrinho
+    function removeFromCart(productId) {
+      cart = cart.filter(item => item.id !== productId);
+      updateCartUI();
+    }
+
+    // Atualizar UI do carrinho
+    function updateCartUI() {
+      cartItemsList.innerHTML = '';
+      if (cart.length === 0) {
+        cartItemsList.innerHTML = '<li>Seu carrinho está vazio.</li>';
+        cartTotalEl.textContent = 'Total: R$ 0,00';
+        emptyCartBtn.disabled = true;
+        emptyCartBtn.style.opacity = '0.5';
+        return;
+      }
+      emptyCartBtn.disabled = false;
+      emptyCartBtn.style.opacity = '1';
+
+      let total = 0;
+      cart.forEach(item => {
+        total += item.preco * item.quantidade;
+        const li = document.createElement('li');
+        li.innerHTML = `
+          ${item.nome} (x${item.quantidade})
+          <button aria-label="Remover ${item.nome} do carrinho">&times;</button>
+        `;
+        const btnRemove = li.querySelector('button');
+        btnRemove.addEventListener('click', () => removeFromCart(item.id));
+        cartItemsList.appendChild(li);
+      });
+      cartTotalEl.textContent = `Total: ${formatPrice(total)}`;
+    }
+
+    // Esvaziar carrinho
+    emptyCartBtn.addEventListener('click', () => {
+      if(confirm('Tem certeza que deseja esvaziar o carrinho?')) {
+        cart = [];
+        updateCartUI();
+      }
+    });
+
+    // Toggle sidebar mobile
+    toggleSidebarBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('visible');
+      // Ajusta aria-expanded para acessibilidade
+      const expanded = sidebar.classList.contains('visible');
+      toggleSidebarBtn.setAttribute('aria-expanded', expanded);
+    });
+
+    // Botão explorar no hero, foca primeira categoria e mostra sidebar em mobile
+    btnExplore.addEventListener('click', () => {
+      // Ativa a primeira categoria
+      const firstCatBtn = categoriesList.querySelector('button');
+      if (firstCatBtn) firstCatBtn.click();
+
+      // Em mobile, abre sidebar
+      if (window.innerWidth <= 900) {
+        sidebar.classList.add('visible');
+        toggleSidebarBtn.setAttribute('aria-expanded', 'true');
+      }
+      // Rola pra sidebar (desktop)
+      sidebar.scrollIntoView({behavior: 'smooth'});
+    });
+
+    // Inicialização
+    loadCategories();
+    loadHighlights(data.destaques);
+    updateCartUI();
+
+    // Fecha sidebar ao clicar fora (mobile)
+    document.addEventListener('click', e => {
+      if (!sidebar.contains(e.target) && !toggleSidebarBtn.contains(e.target)) {
+        if (window.innerWidth <= 900 && sidebar.classList.contains('visible')) {
+          sidebar.classList.remove('visible');
+          toggleSidebarBtn.setAttribute('aria-expanded', 'false');
+        }
+      }
+    });
+
+    // Acessibilidade: fechar sidebar com ESC
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && sidebar.classList.contains('visible')) {
+        sidebar.classList.remove('visible');
+        toggleSidebarBtn.setAttribute('aria-expanded', 'false');
+        toggleSidebarBtn.focus();
+      }
+    });
+  </script>
+</body>
+</html>
